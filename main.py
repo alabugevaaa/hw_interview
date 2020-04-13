@@ -28,21 +28,27 @@ def is_balanced(brackets):
     elif st.peek() not in (')', '}', ']'):
         return 'Небалансированно'
     else:
-        all_br = {st.peek(): 1}
+        st2 = Stack([])
         while not st.is_empty():
-            last_el = st.pop()
-            if last_el in all_br:
-                all_br[last_el] += 1
-            else:
-                all_br[last_el] = 1
-        if all_br.get('(') == all_br.get(')') \
-                and all_br.get('{') == all_br.get('}') \
-                and all_br.get('[') == all_br.get(']'):
+            last_el = st.peek()
+            if last_el in (')', '}', ']'):
+                st2.push(last_el)
+            elif last_el == '(':
+                if st2.peek() == ')':
+                    st2.pop()
+            elif last_el == '{':
+                if st2.peek() == '}':
+                    st2.pop()
+            elif last_el == '[':
+                if st2.peek() == ']':
+                    st2.pop()
+            st.pop()
+        if st2.size() == 0:
             return 'Сбалансированно'
         else:
             return 'Небалансированно'
 
 
 if __name__ == '__main__':
-    print(is_balanced('}{}'))
+    print(is_balanced('([)[]]'))
 
